@@ -13,7 +13,7 @@ def append_row(row):
 
 
 def get_last_row_id():
-     with open('data.csv', 'rb') as f:
+     with open('data.csv', 'rU') as f:
          s = deque(csv.reader(f), 1)[0]
          return int(', '.join(s).split(";")[0])
 
