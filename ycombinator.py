@@ -28,8 +28,7 @@ def init():
 			text = r.text
 			json_array = json.loads(r.text)
 			
-			if json_array != None and json_array['type'] == 'story' and r.text.find("\"title\"") > -1:	
-				print (json_array['title'])					
+			if json_array != None and json_array['type'] == 'story' and r.text.find("\"title\"") > -1:						
 				append_row([count, json_array['time'], json_array['title']])
 			count = count + 1
 		except KeyboardInterrupt:
