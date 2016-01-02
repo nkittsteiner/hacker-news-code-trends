@@ -4,7 +4,6 @@ import csv
 import json
 import sys
 from collections import deque
-# datetime.datetime.fromtimestamp(1160419233)
 
 def append_row(row):
 	with open('data.csv','a') as csv_file:
@@ -22,11 +21,15 @@ def init():
 	url = 'https://hacker-news.firebaseio.com/v0/item/'
 	count = get_last_row_id() + 1
 	text = None
-	while text != 'null':
+
+	last_id = int(requests.get("https://hacker-news.firebaseio.com/v0/maxitem.json").text)
+
+	while count <= last_id:
 		try:
 			r = requests.get(url + str(count) + ".json")
 			text = r.text
 			json_array = json.loads(r.text)
+
 			
 			if json_array != None and json_array['type'] == 'story' and r.text.find("\"title\"") > -1:						
 				append_row([count, json_array['time'], json_array['title']])
