@@ -1,25 +1,57 @@
+import sys
 import yaml
 import csv
 import re
 
-def find_string(str):
-    response = {"flag": False, "type": None, "lang": None}
-    with open("languages.yml", 'r') as stream:
-        yml = yaml.load(stream)
 
-        for key, value in yml.iteritems() :
+class YProcess():
+    
+    def __init__(self):
+        with open("languages.yml", 'r') as stream:
+            self.yml = yaml.load(stream)
+
+
+    def find_string(self, word):
+        response = None
+
+
+        for key, value in self.yml.iteritems() :
             reg_exp = "\\b"
-            if str.find(key) > -1:
-                response['flag'] = True
-                response['type'] = value['type']
-                response['lang'] = key
-                return response
+            if key in word and len(key) > 4:
+                #print key, word
+                response = key
+            elif len(key) <= 4:
+                if key.lower() == word.lower():
+                    #print key, word
+                    response = key
 
-    return response
+        return response
 
 
-with open('data.csv', 'rb') as csvfile:
-     newsreader = csv.reader(csvfile, delimiter=';')
-     for row in newsreader:
-        print row[2]
-        print (find_string(row[2]))
+
+def init():
+
+    yprocess = YProcess()
+
+    with open('data.csv', 'r') as csvfile, open('pre-process.csv', 'wb') as outfile, open('data.csv', 'r') as csvfile2:
+         newsreader = csv.reader(csvfile, delimiter=';')
+         rowreader = csv.reader(csvfile2, delimiter=';')
+         newswriter = csv.writer(outfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
+         count = sum(1 for row in rowreader)
+         i = 1
+         for row in newsreader:
+            sys.stdout.write('\r')
+            sys.stdout.write("Completed: %d%%" % ((i * 100) / count))
+            sys.stdout.flush()
+            i += 1
+
+            pre_clean = row[2]
+
+            for word in pre_clean.split(" "):
+                response = yprocess.find_string(word)
+                if  response is not None:
+                    newswriter.writerow([row[0], row[1], response, row[2]])
+
+if __name__ == "__main__":    
+    init()                    
