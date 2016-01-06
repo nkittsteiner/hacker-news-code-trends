@@ -51,7 +51,8 @@ def init():
             for word in pre_clean.split(" "):
                 response = yprocess.find_string(word)
                 if  response is not None:
-                    newswriter.writerow([row[0], row[1], response, row[2]])
+                    clean = row[2].replace(";","").replace("|", "")                    
+                    newswriter.writerow([row[0], row[1], response, clean])
 
 if __name__ == "__main__":    
     init()                    

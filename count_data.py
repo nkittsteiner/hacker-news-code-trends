@@ -10,12 +10,11 @@ def clean_string(s):
 	return res
 
 news = []
-with open('data.csv', 'rb') as csvfile:
+with open('pre-process.csv', 'rb') as csvfile:
      newsreader = csv.reader(csvfile, delimiter=';')
      for row in newsreader:
-     	pre_clean = clean_string(row[2])
-        for word in pre_clean.split(" "):
-        	news.append(word)
+     	print row
+    	news.append(row[2])
 
 
 ordered = []
