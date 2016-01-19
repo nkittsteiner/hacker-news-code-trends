@@ -1,5 +1,6 @@
 import csv
 import re 
+import json
 from collections import Counter
 
 
@@ -10,11 +11,11 @@ def clean_string(s):
 	return res
 
 news = []
-with open('pre-process.csv', 'rb') as csvfile:
+with open('pre-process.csv', 'rU') as csvfile:
      newsreader = csv.reader(csvfile, delimiter=';')
      for row in newsreader:
-     	print row
-    	news.append(row[2])
+     	if len(row) == 4:
+    	    news.append(row[2])
 
 
 ordered = []
@@ -23,3 +24,5 @@ for (k,v) in Counter(news).iteritems():
 
 for obj in sorted(ordered):
 	print "%s:%s" % (obj['name'], obj['count'])
+
+print json.dumps(sorted(ordered))
