@@ -4,17 +4,22 @@ import json
 from collections import Counter
 
 
-def clean_string(s):
-	s = s.lower()
-	rx = re.compile('[^a-zA-Z-+#]+')
-	res = rx.sub(' ', s).strip()
-	return res
+def ignore_word(word):
+	response = False
+	ignore_file = open('ignore_words.txt', 'r')
+	lines = ignore_file.readlines()
+	for line in lines:		
+		if line.strip().lower() == word.lower():			
+			return True
+
+	return response
 
 news = []
 with open('pre-process.csv', 'rU') as csvfile:
      newsreader = csv.reader(csvfile, delimiter=';')
+     
      for row in newsreader:
-     	if len(row) == 4:
+     	if len(row) == 4 and not ignore_word(row[2]):
     	    news.append(row[2])
 
 
@@ -22,7 +27,5 @@ ordered = []
 for (k,v) in Counter(news).iteritems():        	
 	ordered.append({"name": k, "count": v})
 
-for obj in sorted(ordered):
-	print "%s:%s" % (obj['name'], obj['count'])
 
-print json.dumps(sorted(ordered))
+print json.dumps(sorted(ordered))	
