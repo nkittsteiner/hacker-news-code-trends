@@ -35,3 +35,7 @@ Dylan
 Oz
 Harbour
 Monkey
+text
+html
+http
+sql
