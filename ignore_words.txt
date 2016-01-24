@@ -39,3 +39,4 @@ text
 html
 http
 sql
+json
