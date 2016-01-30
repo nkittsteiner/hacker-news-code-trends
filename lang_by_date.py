@@ -18,7 +18,7 @@ def find_news(lang):
                 temp_df = pd.DataFrame({'lang': row[2] }, index=[date])
                 df = df.append(temp_df)
 
-    group = df.groupby(lambda x: x.year*100 + x.month).count()
+    group = df.groupby(lambda x: x.year).count()
     for element in group.to_dict()['lang'].iteritems():
         x.append(element[0])
         values.append(element[1])
@@ -37,7 +37,7 @@ def init():
     lines = file.readlines()
     json_array = json.loads(lines[0].strip())
 
-    json_array = json_array[len(json_array)-20:]
+    json_array = json_array[len(json_array)-10:]
     news = []
     xs = {}
 
