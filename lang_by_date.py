@@ -37,7 +37,7 @@ def init():
     lines = file.readlines()
     json_array = json.loads(lines[0].strip())
 
-    json_array = json_array[len(json_array)-20:]
+    json_array = json_array[len(json_array)-10:]
     news = []
     xs = {}
 
